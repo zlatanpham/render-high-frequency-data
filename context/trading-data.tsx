@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef } from 'react';
 import { WorkerDataTypes } from '../types/worker';
 import { useAccountsContext } from './accounts';
 import mitt, { Emitter } from 'mitt';
+import { useIsWindowVisible } from '../hooks/useIsWindowVisible';
 
 interface TradingDataValues {
   emitter: Emitter<any>;
@@ -15,8 +16,14 @@ const TradingDataProvider: React.FC<React.ReactNode> = ({ children }) => {
   const worker = useRef<Worker>();
   const tradingData = useRef();
   const emitter = useRef(mitt());
+  const isOnTab = useRef(true);
 
   const { accounts } = useAccountsContext();
+  const isVisible = useIsWindowVisible();
+
+  useEffect(() => {
+    isOnTab.current = isVisible;
+  }, [isVisible]);
 
   useEffect(() => {
     worker.current = new Worker(
@@ -30,8 +37,10 @@ const TradingDataProvider: React.FC<React.ReactNode> = ({ children }) => {
       const { data, type } = event.data as WorkerDataTypes;
       switch (type) {
         case 'TRADE':
-          tradingData.current = data;
-          emitter.current.emit('trading', tradingData.current);
+          if (isOnTab.current) {
+            tradingData.current = data;
+            emitter.current.emit('trading', tradingData.current);
+          }
           break;
       }
     };
