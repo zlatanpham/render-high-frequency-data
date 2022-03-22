@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useTradingDataContext } from '../context/trading-data';
 
-export const PositionTable = React.memo(({ data, node, api }) => {
+export const PositionTable = ({ data, node, api }) => {
   const rowId = node.id;
   const [rowData] = useState(data.positions);
   const { emitter } = useTradingDataContext();
@@ -103,4 +103,4 @@ export const PositionTable = React.memo(({ data, node, api }) => {
       onGridReady={onGridReady}
     />
   );
-});
+};
