@@ -22,32 +22,38 @@ export const DataTable = () => {
     {
       headerName: 'Fee Tier',
       field: 'feeTier',
-      width: 200,
+      width: 250,
+      cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
     {
       headerName: 'Total Initial Margin',
       field: 'totalInitialMargin',
-      width: 200,
+      width: 250,
+      cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
     {
       headerName: 'Available Balance',
       field: 'availableBalance',
-      width: 200,
+      width: 250,
+      cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
     {
       headerName: 'Total Margin Balance',
       field: 'totalMarginBalance',
-      width: 200,
+      width: 250,
+      cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
     {
       headerName: 'Cross Wallet Balance',
       field: 'totalCrossWalletBalance',
-      width: 200,
+      width: 250,
+      cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
     {
       headerName: 'Total Initial Margin',
       field: 'totalInitialMargin',
-      width: 200,
+      width: 250,
+      cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
   ]);
 

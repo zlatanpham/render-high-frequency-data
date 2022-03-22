@@ -33,23 +33,41 @@ export const PositionTable = ({ data, node, api }) => {
 
   const colDefs = useMemo(
     () => [
-      { field: 'symbol' },
-      { field: 'askNotional' },
-      { field: 'bidNotional' },
-      { field: 'entryPrice' },
-      { field: 'initialMargin' },
-      { field: 'isolated' },
-      { field: 'isolatedWallet' },
-      { field: 'leverage' },
-      { field: 'maintMargin' },
-      { field: 'maxNotional' },
-      { field: 'notional' },
-      { field: 'openOrderInitialMargin' },
-      { field: 'positionAmt' },
-      { field: 'positionInitialMargin' },
-      { field: 'positionSide' },
-      { field: 'unrealizedProfit' },
-      { field: 'updateTime' },
+      { field: 'symbol', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      { field: 'askNotional', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      { field: 'bidNotional', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      { field: 'entryPrice', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      {
+        field: 'initialMargin',
+        cellRenderer: 'agAnimateShowChangeCellRenderer',
+      },
+      { field: 'isolated', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      {
+        field: 'isolatedWallet',
+        cellRenderer: 'agAnimateShowChangeCellRenderer',
+      },
+      { field: 'leverage', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      { field: 'maintMargin', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      { field: 'maxNotional', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      { field: 'notional', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      {
+        field: 'openOrderInitialMargin',
+        cellRenderer: 'agAnimateShowChangeCellRenderer',
+      },
+      { field: 'positionAmt', cellRenderer: 'agAnimateShowChangeCellRenderer' },
+      {
+        field: 'positionInitialMargin',
+        cellRenderer: 'agAnimateShowChangeCellRenderer',
+      },
+      {
+        field: 'positionSide',
+        cellRenderer: 'agAnimateShowChangeCellRenderer',
+      },
+      {
+        field: 'unrealizedProfit',
+        cellRenderer: 'agAnimateShowChangeCellRenderer',
+      },
+      { field: 'updateTime', cellRenderer: 'agAnimateShowChangeCellRenderer' },
     ],
     [],
   );
@@ -79,7 +97,7 @@ export const PositionTable = ({ data, node, api }) => {
 
     scrollTimeout.current = setTimeout(() => {
       blockRender.current = false;
-    }, 1000);
+    }, 500);
   }, []);
 
   useEffect(() => {
