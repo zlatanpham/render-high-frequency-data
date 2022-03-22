@@ -1,15 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { useTradingDataContext } from '../context/trading-data';
 import { PositionTable } from './PositionTable';
 // makes a copy of the original and merges in the new values
 
 export const DataTable = () => {
   const gridRef = useRef();
-  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const [rowData, setRowData] = useState();
   const { emitter } = useTradingDataContext();
@@ -85,25 +82,22 @@ export const DataTable = () => {
   }, []);
 
   return (
-    <div style={containerStyle}>
-      <div className="example-wrapper">
-        <div style={gridStyle} className="ag-theme-alpine">
-          <AgGridReact
-            ref={gridRef}
-            masterDetail={true}
-            rowData={rowData}
-            columnDefs={columnDefs}
-            suppressAggFuncInHeader={true}
-            asyncTransactionWaitMillis={1000}
-            getRowId={getRowId}
-            detailRowHeight={500}
-            detailCellRenderer={PositionTable}
-            defaultColDef={defaultColDef}
-            autoGroupColumnDef={autoGroupColumnDef}
-            onGridReady={onGridReady}
-          ></AgGridReact>
-        </div>
-      </div>
+    <div style={gridStyle} className="ag-theme-alpine">
+      <AgGridReact
+        ref={gridRef}
+        animateRows={true}
+        masterDetail={true}
+        rowData={rowData}
+        columnDefs={columnDefs}
+        suppressAggFuncInHeader={true}
+        asyncTransactionWaitMillis={1000}
+        getRowId={getRowId}
+        detailRowHeight={500}
+        detailCellRenderer={PositionTable}
+        defaultColDef={defaultColDef}
+        autoGroupColumnDef={autoGroupColumnDef}
+        onGridReady={onGridReady}
+      ></AgGridReact>
     </div>
   );
 };

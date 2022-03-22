@@ -1,16 +1,23 @@
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTradingDataContext } from '../context/trading-data';
 
-export const PositionTable = ({ data, node, api }) => {
+export const PositionTable = React.memo(({ data, node, api }) => {
   const rowId = node.id;
   const [rowData] = useState(data.positions);
   const { emitter } = useTradingDataContext();
+  const blockRender = useRef(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     return () => {
       console.log('removing detail grid info with id: ', rowId);
-
       // the detail grid is automatically destroyed as it is a React component
       api.removeDetailGridInfo(rowId);
     };
@@ -24,25 +31,28 @@ export const PositionTable = ({ data, node, api }) => {
     };
   }, []);
 
-  const colDefs = [
-    { field: 'symbol' },
-    { field: 'askNotional' },
-    { field: 'bidNotional' },
-    { field: 'entryPrice' },
-    { field: 'initialMargin' },
-    { field: 'isolated' },
-    { field: 'isolatedWallet' },
-    { field: 'leverage' },
-    { field: 'maintMargin' },
-    { field: 'maxNotional' },
-    { field: 'notional' },
-    { field: 'openOrderInitialMargin' },
-    { field: 'positionAmt' },
-    { field: 'positionInitialMargin' },
-    { field: 'positionSide' },
-    { field: 'unrealizedProfit' },
-    { field: 'updateTime' },
-  ];
+  const colDefs = useMemo(
+    () => [
+      { field: 'symbol' },
+      { field: 'askNotional' },
+      { field: 'bidNotional' },
+      { field: 'entryPrice' },
+      { field: 'initialMargin' },
+      { field: 'isolated' },
+      { field: 'isolatedWallet' },
+      { field: 'leverage' },
+      { field: 'maintMargin' },
+      { field: 'maxNotional' },
+      { field: 'notional' },
+      { field: 'openOrderInitialMargin' },
+      { field: 'positionAmt' },
+      { field: 'positionInitialMargin' },
+      { field: 'positionSide' },
+      { field: 'unrealizedProfit' },
+      { field: 'updateTime' },
+    ],
+    [],
+  );
 
   const getRowId = useCallback(function (params) {
     return params.data.symbol;
@@ -50,6 +60,9 @@ export const PositionTable = ({ data, node, api }) => {
 
   const onGridReady = useCallback((params) => {
     emitter.on('trading', (data) => {
+      if (blockRender.current) {
+        return;
+      }
       params.api.applyTransactionAsync({
         update: data.accounts.filter((account) => account.id !== data.id)[0]
           .positions,
@@ -57,18 +70,37 @@ export const PositionTable = ({ data, node, api }) => {
     });
   }, []);
 
+  const onScroll = useCallback(() => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    blockRender.current = true;
+
+    scrollTimeout.current = setTimeout(() => {
+      blockRender.current = false;
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="full-width-panel">
-      <AgGridReact
-        animateRows
-        getRowId={getRowId}
-        className="full-width-grid ag-theme-alpine"
-        columnDefs={colDefs}
-        asyncTransactionWaitMillis={1000}
-        defaultColDef={defaultColDef}
-        rowData={rowData}
-        onGridReady={onGridReady}
-      />
-    </div>
+    <AgGridReact
+      animateRows={true}
+      onBodyScroll={onScroll}
+      getRowId={getRowId}
+      columnDefs={colDefs}
+      suppressAggFuncInHeader={true}
+      asyncTransactionWaitMillis={1000}
+      defaultColDef={defaultColDef}
+      rowData={rowData}
+      onGridReady={onGridReady}
+    />
   );
-};
+});

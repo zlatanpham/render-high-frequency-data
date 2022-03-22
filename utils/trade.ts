@@ -12,13 +12,16 @@ export function fieldToNumber(obj: Record<string, any>) {
 }
 
 export function randomNumberField(obj: Record<string, any>) {
+  // Number fields to update
+  let count = 10;
   const response: any = {};
   Object.entries(obj).forEach(([key, value]) => {
-    if (typeof value === 'number') {
+    if (typeof value === 'number' && count > 0) {
       response[key] = Math.random() * 100;
     } else {
       response[key] = value;
     }
+    count--;
   });
 
   return response;
