@@ -1,5 +1,10 @@
 import { AppDataTypes, WorkerDataTypes } from './types/worker';
-import { fieldToNumber, pipe, randomNumberField } from './utils/trade';
+import {
+  fieldToNumber,
+  pipe,
+  randomNumberField,
+  randomNumberForPositions,
+} from './utils/trade';
 
 // Event handler called when a tab tries to connect to this worker.
 interface Response {
@@ -12,6 +17,7 @@ interface InternalValues {
 }
 
 const internalValues: InternalValues = {};
+
 const response: Response = {};
 
 const ws = new WebSocket('wss://testnet-dex.binance.org/api/ws');
@@ -48,7 +54,7 @@ onmessage = (msg) => {
 // the current state of WS connection.
 setInterval(() => {
   response.accounts = (internalValues.accounts || []).map(
-    pipe(fieldToNumber, randomNumberField),
+    pipe(fieldToNumber, randomNumberField, randomNumberForPositions),
   );
 
   postMessage({ type: 'TRADE', data: response } as WorkerDataTypes);

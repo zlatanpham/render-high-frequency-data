@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.ag-root-wrapper-body {
+  height: 100vh !important;
+}

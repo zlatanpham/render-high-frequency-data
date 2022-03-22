@@ -24,6 +24,15 @@ export function randomNumberField(obj: Record<string, any>) {
   return response;
 }
 
+export function randomNumberForPositions(obj: Record<string, any>) {
+  return {
+    ...obj,
+    positions: (obj.positions || []).map(
+      pipe(fieldToNumber, randomNumberField),
+    ),
+  };
+}
+
 export function pipe<T extends any[], R>(
   fn1: (...args: T) => R,
   ...fns: Array<(a: R) => R>

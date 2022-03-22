@@ -30,7 +30,7 @@ const AccountsProvider: React.FC<React.ReactNode> = ({ children }) => {
             id: dbAccount.id,
           },
         ]);
-      }, 10000);
+      }, 1000);
     });
   }, []);
 
