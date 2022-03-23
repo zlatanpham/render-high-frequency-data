@@ -18,6 +18,7 @@ export const DataTable = () => {
       headerName: 'Name',
       field: 'display_name',
       cellRenderer: 'agGroupCellRenderer',
+      width: 170,
     },
     {
       headerName: 'Fee Tier',

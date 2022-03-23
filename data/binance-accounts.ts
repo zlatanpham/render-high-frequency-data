@@ -56,7 +56,7 @@ export interface BinanceAccount {
   positions: Position[];
 }
 
-const accounts: BinanceAccount[] = Array.from({ length: 100 }).map(
+const accounts: BinanceAccount[] = Array.from({ length: 200 }).map(
   (_, index) => ({
     feeTier: 0,
     canTrade: true,
